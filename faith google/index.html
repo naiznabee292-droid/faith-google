@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAITH GOOGLE</title>
+   <link rel="shortcut icon" href="files\badge-red.png" type="image/webp">
+  <link rel="icon" href="files\badge-red.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#1a0000;
+      --bg2:#000000;
+      --glass: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.12);
+      --txt:#fff2f2;
+      --muted:#ffcccccc;
+      --accent:#e53935;
+      --accent-2:#b71c1c;
+      --shadow: 0 14px 28px rgba(0,0,0,.6), 0 2px 10px rgba(0,0,0,.5);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;}
+    body{
+      margin:0; font-family:Inter, sans-serif; color:var(--txt);
+      background:
+        radial-gradient(1000px 600px at 10% 0%, #e5393515 0%, transparent 60%),
+        radial-gradient(1000px 600px at 100% 0%, #b71c1c20 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;
+    }
+    .container{width:min(980px,100%);display:flex;flex-direction:column;align-items:center;gap:20px;padding:0 16px;} 
+    header{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+    .logo{display:flex;flex-direction:column;align-items:center;gap:10px;user-select:none;}
+    .logo svg{width:110px;height:110px;}
+    .logo h1{margin:0;font-size:logo 1(30px,5vw,44px);letter-spacing:.5px;color:var(--accent);text-shadow:0 2px 8px #000;}
+
+    .search-card{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:2px solid #400000;border-radius:20px;padding:24px;box-shadow:var(--shadow);
+      position:relative;overflow:hidden;width:100%;max-width:500px;transition:transform .3s, box-shadow .3s;
+    }
+    @media (hover:hover){.search-card:hover{transform:scale(1.02);box-shadow:0 0 25px #e5393533;}}
+
+    .search-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;}
+    .field{position:relative;}
+    .field input{width:100%;padding:16px;border-radius:16px;border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);color:var(--txt);outline:none;font-size:16px;text-align:center;transition:0.3s;}
+    .field input:focus{border-color:var(--accent);box-shadow:0 0 10px #e53935aa;}
+
+    button.primary{padding:14px 18px;border-radius:12px;border:2px solid #4a0000;cursor:pointer;font-weight:600;font-size:15px;
+      background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 0 #000,0 10px 20px rgba(0,0,0,.4);transition:transform .1s, background .3s;}
+    button.primary:hover{transform:translateY(1px);background:linear-gradient(180deg,#ff4444,#b71c1c);} 
+
+    .results{display:grid;gap:12px;margin-top:14px;justify-items:center;}
+    .card{border:1px solid var(--stroke);background:var(--glass);border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;backdrop-filter:blur(6px);animation:fadeIn .6s ease-in-out;width:100%;max-width:400px;}
+    .card .title{font-weight:800;font-size:22px;color:var(--accent);text-shadow:0 0 10px #e53935aa;}
+    .card .url{color:var(--muted);font-size:15px;word-break:break-all;margin-top:6px;}
+
+    @keyframes fadeIn {
+      from {opacity:0;transform:translateY(10px);}
+      to {opacity:1;transform:translateY(0);}
+    }
+
+    .empty{text-align:center;color:var(--muted);padding:18px;}
+
+    /* Popular chips */
+    .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;}
+    .chip{padding:10px 14px;border-radius:999px;border:2px solid #4a0000;background:rgba(229,57,53,.15);color:#fff;font-weight:700;cursor:pointer;transition:transform .1s, box-shadow .2s;}
+    .chip:hover{transform:translateY(1px);box-shadow:0 6px 14px rgba(229,57,53,.25);} 
+
+    /* Modal styles */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;place-items:center;z-index:50;padding:16px;}
+    .modal{width:min(560px,95%);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid var(--stroke);border-radius:18px;box-shadow:var(--shadow);padding:20px;text-align:left;}
+    .modal h3{margin:0 0 6px;font-size:22px;color:var(--accent);} 
+    .modal p{margin:0 0 14px;color:var(--muted);} 
+    .modal .actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .modal .btn{flex:1;min-width:160px;border-radius:12px;padding:14px;font-weight:700;cursor:pointer;border:1px solid var(--stroke);background:rgba(0,0,0,.25);color:var(--txt);} 
+    .modal .btn.primary{background:linear-gradient(180deg,var(--accent),var(--accent-2));border:0;color:#fff;}
+  /* Responsive tweaks */
+    @media (max-width: 520px){
+      .logo svg{width:90px;height:90px;}
+      .logo h1{font-size:logo 1(26px,5vw,38px);}
+      .search-row{grid-template-columns:1fr;}
+      button.primary{width:100%;}
+      .chip{padding:12px 16px;font-size:0.95rem;}
+      .card{max-width:100%;}
+      .search-card{padding:20px;}
+    }
+    @media (min-width: 768px){
+      .search-card{max-width:620px;}
+      .card{max-width:480px;}
+    }
+    @media (min-width: 1200px){
+      .search-card{max-width:720px;}
+      .logo svg{width:120px;height:120px;}
+      .logo h1{font-size:logo 1(34px,4vw,50px);} 
+    }
+
+    /* Respect users who prefer less motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+  <div class="12">
+  <img src="12.png"width="150" height="150">
+
+        <h1>FAITH GOOGLE(Beta)</h1>
+      </div>
+    </header>
+
+    <section class="search-card">
+      <div class="search-row">
+        <div class="field">
+          <input id="q" type="text" placeholder="Type a keyword… Try: gta5" />
+        </div>
+        <button class="primary" id="searchBtn">Search</button>
+      </div>
+
+      <!-- Simple suggestion box below search box -->
+      <div class="chips" id="suggestionChips" aria-label="Popular keywords"></div>
+
+      <!-- Search results -->
+      <div class="results" id="results"></div>
+    </section>
+  </div>
+
+  <!-- Instagram follow modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Before you download…</h3>
+      <p>Could you <strong>follow on Instagram</strong>? It really helps! 🙏</p>
+      <div class="actions">
+        <button class="btn" id="continueBtn">Continue to download</button>
+        <button class="btn primary" id="igBtn">Open Instagram</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const LINKS = { 
+      "gta5": "https://telegram.me/+IdGF8FUVelMzY2Zl",
+      "rdr2": "https://telegram.me/+cDLaN1tqmw44Zjk9",
+      "forza5": "https://telegram.me/+03TEoC4OkAJkMzk1",
+      "mghost": "https://telegram.me/+t4e7pUagJwE0NjZl",
+      "messenger": "https://messenger.abeto.co/",
+      "msg": "https://messenger.abeto.co/",
+      "rallypc": "https://telegram.me/+w65NpIyqmeBkZWY9",
+
+    };
+    const INSTAGRAM_URL = "https://www.instagram.com/faith_esports_india/";
+
+    // Elements
+    const resultsEl = document.getElementById('results');
+    const qEl = document.getElementById('q');
+    const searchBtn = document.getElementById('searchBtn');
+    const suggestionChipsEl = document.getElementById('suggestionChips');
+
+    // Modal controls
+    const modal = document.getElementById('modal');
+    const igBtn = document.getElementById('igBtn');
+    const continueBtn = document.getElementById('continueBtn');
+    let pendingURL = null;
+
+    function openModal(url){ pendingURL = url; modal.style.display = 'grid'; }
+    function closeModal(){ modal.style.display = 'none'; pendingURL = null; }
+
+    igBtn?.addEventListener('click', ()=>{
+      window.open(INSTAGRAM_URL, '_blank', 'noopener,noreferrer');
+    });
+    continueBtn?.addEventListener('click', ()=>{
+      if(pendingURL){ window.open(pendingURL, '_blank', 'noopener,noreferrer'); }
+      closeModal();
+    });
+    modal?.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+    function doSearch(){
+      const key=(qEl.value||'').trim().toLowerCase();
+      resultsEl.innerHTML='';
+      if(!key){resultsEl.innerHTML='<div class="empty">Enter a keyword to find your game link.</div>';return;}
+      const url=(LINKS[key]||'').trim();
+      if(!url){
+        resultsEl.innerHTML=`<div class=\"empty\">No game found for <b>${key}</b>.<br/>Tip: DON'T BE OVER SMART</div>`;
+        return;
+      }
+      const card=document.createElement('div');
+      card.className='card';
+      card.innerHTML=`<div class='title'>🎮 Here is your game!</div><div class='url'>${url}</div><button class='primary' id='openBtn'>Download It</button>`;
+      resultsEl.appendChild(card);
+      document.getElementById('openBtn').onclick=()=> openModal(url);
+    }
+
+    searchBtn.onclick=doSearch;
+    qEl.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+    // Render simple suggestion chips under search box
+    const POPULAR=["gta5","rdr2","forza5"];
+    function renderSuggestionChips(){
+      suggestionChipsEl.innerHTML='';
+      POPULAR.forEach(k=>{
+        const b=document.createElement('button');
+        b.className='chip';
+        b.type='button';
+        b.textContent=k.toUpperCase();
+        b.title=`Search for ${k.toUpperCase()}`;
+        b.addEventListener('click',()=>{ qEl.value=k; doSearch(); });
+        suggestionChipsEl.appendChild(b);
+      });
+    }
+    renderSuggestionChips();
+  </script>
+</body>
+</html>
